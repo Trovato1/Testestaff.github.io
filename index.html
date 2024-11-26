@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>Bem-vindo à STAFF</title>
+</head>
+<body>
+  <h1>Teste Staff</h1>
+  <div id="quiz-container"></div>
+
+  <div class="result hidden" id="result">
+    <p class="result-text"></p>
+  </div>
+
+  <script>
+    
+    const questions = [
+      {
+        text: "1. Em qual situação um player de uma organização (legal) pode ser roubado dentro das regras de RP?",
+        options: ["Quando o indivíduo não estiver em horário de serviço e fardado.", "Em qualquer situação, desde que não seja em safezone.", "Apenas quando estiver em uma safezone, mas fora de serviço.", "Quando o player estiver realizando uma atividade ilegal em grupo."," Em qualquer situação, desde que esteja fora do horário de serviço." ],
+        correct: 1, 
+      },
+      {
+        text: "2. Qual é a principal exigência ao enviar um clipe como prova em uma denúncia?",
+        options: ["Que seja enviado por um link, como YouTube ou Medal", "Que tenha no minímo 30 segundos de duração", "Que seja enviado diretamente no chat privado da staff", "Que contenha as logs da ação, sem a necessidade de contexto", "Que seja editado para destacar apenas o ponto principal da denúncia"],
+        correct: 2,
+      },
+      {
+        text: "3. O que acontece se você abrir um ticket de denúncia contra outro player?",
+        options: ["Apenas o acusado será avaliado pela staff", "A denúncia será automaticamente revogada se ambas as partes estiverem erradas", "A staff avalia a conduta de todos os envolvidos, incluindo você", "A denúncia só será aceita se for feita por terceiros", "Você pode cancelar a denúncia a qualquer momento, se mudar de ideia"],
+        correct: 3,
+      },
+      {
+        text: "4. Em qual dos locais abaixo é permitido furtar veículos no estacionamento?",
+        options: ["Hospital", "Mecânica", "Cassino", "Praça", "Nenhum dos locais acima"],
+        correct: 3,
+      },
+      {
+        text: "5. QQual ação é sempre proibida em todas as safezones, sem exceção?",
+        options: ["Furtar veículos nos estacionamentos liberados", "Sequestrar outro player sem permissão prévia", "Matar, roubar e sequestrar sem motivo", "Trocar itens ou dinheiro com outros players","Fazer RP de socialização com outros jogadores"],
+        correct: 3,
+      },
+      {
+        text: "6. O que acontece se um jogador se recusar a realizar a verificação de tela solicitada pela equipe de Screenshare?",
+        options: ["Recebe uma advertência por escrito e uma nova solicitação de verificação", "É banido da Berlim, sem possibilidade de revisão.", "O caso é arquivado sem consequências, pois a verificação não é obrigatória", "Recebe um banimento temporário até que aceite realizar a verificação","A equipe de Screenshare realiza a análise sem o consentimento do jogador"],
+        correct: 2,
+      },
+      {
+        text: "7. Durante ações ilegais, qual das seguintes situações é permitida?",
+        options: ["Fornecer armas gratuitamente para novatos na cidade", "Fazer RP de caixa 2 em uma organização", "Vender itens ilegais abaixo da tabela de preços oficial", "Utilizar binds em ações de rua fora de confrontos","Usar veículos de serviço, como ambulâncias, para locomoção"],
+        correct: 4,
+      },
+      {
+        text: "8. Qual das seguintes ações durante uma pacificação não é permitida?",
+        options: ["Utilizar 1 helicóptero por facção, limitado a sobrevoar 1 quarteirão do local", "Trancar portões e portas internas da facção antes do início da pacificação", "A polícia apreender todos os itens do baú se vencer a pacificação", "Informar o contingente dos criminosos com 6 horas de antecedência ao responsável ilegal","Realizar o rush após 1 hora de ação, caso o grupo tenha maior contingente"],
+        correct: 2,
+      },
+      {
+        text: "9. Quando uma facção pode ser posta à venda sem aviso prévio?",
+        options: ["Após 24 horas sem comunicação com a prefeitura", "Se o líder da facção sair ou ficar offline por 3 dias sem justificativa", "Quando a facção atinge o limite de 120 membros", "Se houver denúncias de Dark RP contra a facção","Após três avisos de pacificação falharem"],
+        correct: 2,
+      },
+      {
+        text: "10. Durante uma pacificação, qual regra é aplicável ao uso de helicópteros?",
+        options: ["Helicópteros podem ser reparados ou substituídos durante a ação", "Cada facção pode usar dois helicópteros simultaneamente", "Apenas um helicóptero por facção é permitido, e ele deve sobrevoar até 1 quarteirão da área", "Os policiais podem pousar helicópteros fora da área designada","Os criminosos podem utilizar helicópteros adicionais se forem derrotados"],
+        correct: 3,
+      },
+      {
+        text: "11. Durante uma dominação, qual das seguintes práticas é permitida?",
+        options: ["Utilizar veículos dentro do perímetro para se proteger", "Subir em estruturas como telhados ou superfícies elevadas", "Atirar apenas após a zona de confronto aparecer", "Fazer disparos antes do início da dominação","Realizar assaltos próximos à área de dominação"],
+        correct: 3,
+      },
+      {
+        text: "12. Qual é a penalidade para um jogador que sai da área de dominação após o início da ação?",
+        options: ["Banimento permanente do servidor", "Advertência verbal", "Deve aceitar a morte ou aguardar o fim da dominação", "Perda automática de todos os itens saqueados","Suspensão por 24 horas"],
+        correct: 3,
+      },
+      {
+        text: "13. Qual das seguintes ações não é permitida durante uma dominação?",
+        options: ["Sacar corpos apenas dentro do perímetro da dominação", "Usar celulares para comunicação dentro do perímetro", "Disparar dentro do perímetro após o início da dominação", "Permanecer no perímetro até o final da dominação","Respeitar o limite de uma dose de adrenalina por jogador"],
+        correct: 2,
+      },
+      {
+        text: "14. Quando uma facção pode voltar a participar de uma nova dominação?",
+        options: ["Imediatamente após perder, se outra facção puxar o dominas novamente", "Após 1 hora, se a dominação anterior terminar", "Somente na próxima liberação do dominas", "Quando os administradores autorizarem, independentemente do horário","Assim que houver um novo confronto"],
+        correct: 3,
+      },
+      {
+        text: "15. Quantos policiais precisam estar em patrulhamento para que um assalto possa ser iniciado?",
+        options: ["1", "2", "3", "4","Não é necessário número mínimo de policiais"],
+        correct: 2,
+      },
+      {
+        text: "16. O que deve ser feito para iniciar um assalto?",
+        options: ["Estar em qualquer lugar da cidade e ter no mínimo 1 bandido", "Usar a voz em modo “GRITANDO” e ter no mínimo 2 bandidos", "Realizar uma abordagem policial antes de iniciar o assalto", "Ter um veículo de fuga pronto e disponível","Estar em uma área deserta"],
+        correct: 2,
+      },
+      {
+        text: "17. O que acontece se a polícia se envolver no assalto?",
+        options: ["O assalto deve ser imediatamente cancelado", "A vítima deve ser libertada, e o QRR é permitido para ambos os lados", "O assalto continua normalmente, sem nenhuma alteração", "O bandido que começou o assalto é automaticamente preso","A vítima se torna uma nova parte da ação policial"],
+        correct: 2,
+      },
+      {
+        text: "18. É permitido atirar de dentro de um carro durante o assalto?",
+        options: ["Sim, mas somente de carros blindados", "Sim, após a voz de assalto ser anunciada", "Não, em hipótese alguma", "Sim, desde que o carro não seja blindado","Não, exceto se houver um tiroteio com a polícia"],
+        correct: 4,
+      },
+      {
+        text: "19. Quantos policiais são necessários em patrulhamento para iniciar um sequestro?",
+        options: ["4", "6", "8", "10","Não há número mínimo de policiais necessário"],
+        correct: 3,
+      },
+      {
+        text: "20. Quantos bandidos são necessários para iniciar um sequestro?",
+        options: ["4", "6", "8", "10","Não há número mínimo de bandidos necessário"],
+        correct: 2,
+      },
+      {
+        text: "21. Qual item é obrigatório para realizar um sequestro?",
+        options: ["Um veículo roubado", "Algema e capuz", "Arma de fogo", "Máscara","Cinto de segurança"],
+        correct: 2,
+      },
+      {
+        text: "22. O que é proibido fazer após ser algemado durante um sequestro?",
+        options: ["Chamar reforços pela rádio.", "Fugir para uma Safe Zone", "Puxar rádio, o jogador deve sair da rádio", "Realizar um movimento rápido","Continuar falando com a vítima"],
+        correct: 3,
+      },
+      {
+        text: "23. Para sequestrar policiais, qual é a condição mínima de contingente de bandidos?",
+        options: ["2 bandidos x 2 policiais", "3 bandidos x 3 policiais", "4 bandidos x 4 policiais", "6 bandidos x 4 policiais","6 bandidos x 2 policiais"],
+        correct: 5,
+      },
+      {
+        text: "24. É permitido sequestrar em Safe Zones?",
+        options: ["Sim, sem restrições", "Sim, mas somente com um motivo válido", "Não, nunca", "Sim, desde que a vítima esteja sozinha","Não, exceto em caso de emergência"],
+        correct: 2,
+      },
+      {
+        text: "25. O que é obrigatório ao realizar um sequestro?",
+        options: ["A vítima deve ser transportada para outra área", "Anunciar a rendição e a ação para a vítima/refém com a voz no modo “GRITANDO”", "Utilizar veículos de fuga", "Pedir dinheiro ou transferências bancárias","Reagir imediatamente caso a vítima tente fugir"],
+        correct: 2,
+      },
+      {
+        text: "26. É permitido sequestrar uma pessoa que saiba o plano da ação ou que faça parte da facção?",
+        options: ["Sim, caso seja um policial infiltrado", "Não, é proibido sequestrar esse tipo de pessoa", "Sim, desde que a pessoa não reaja", "Não, a pessoa deve ser retirada da área antes do sequestro","Sim, mas a pessoa não pode interferir na ação"],
+        correct: 2,
+      },
+      {
+        text: "27. É permitido sequestrar novatos ou pessoas trabalhando em empregos legais?",
+        options: ["Sim, sem restrições", " Não, é proibido se estiverem devidamente uniformizados e em veículos de seus respectivos empregos", "Sim, desde que não estejam em serviço", "Não, é permitido sequestrar apenas se estiverem fora de seu horário de trabalho","Sim, mas a vítima não pode ser ferida"],
+        correct: 2,
+      },
+
+    ];
+
+    const totalQuestions = questions.length;
+    let answeredQuestions = 0;
+    let correctAnswers = 0;
+
+    
+    function loadQuestions() {
+      const quizContainer = document.getElementById("quiz-container");
+
+      questions.forEach((question, index) => {
+        const questionDiv = document.createElement("div");
+        questionDiv.classList.add("question");
+        questionDiv.innerHTML = `<p>${question.text}</p>`;
+
+        question.options.forEach((option, optionIndex) => {
+          const button = document.createElement("button");
+          button.textContent = option;
+          button.onclick = () => answerQuestion(index, optionIndex);
+          questionDiv.appendChild(button);
+        });
+
+        quizContainer.appendChild(questionDiv);
+      });
+    }
+
+    function answerQuestion(questionId, selectedOption) {
+      const questionDiv = document.querySelectorAll('.question')[questionId];
+      const buttons = questionDiv.querySelectorAll('button');
+
+      
+      if (questionDiv.dataset.answered === "true") return;
+
+      questionDiv.dataset.answered = "true";
+      answeredQuestions++;
+
+      
+      if (selectedOption === questions[questionId].correct) correctAnswers++;
+
+      
+      buttons.forEach(button => button.disabled = true);
+
+      
+      if (answeredQuestions === totalQuestions) {
+        showFinalResult();
+      }
+    }
+
+    function showFinalResult() {
+      const resultDiv = document.getElementById('result');
+      const resultText = document.querySelector('.result-text');
+
+      resultText.textContent = `Você acertou ${correctAnswers} de ${totalQuestions} perguntas.`;
+      resultDiv.classList.remove('hidden');
+    }
+
+    
+    loadQuestions();
+  </script>
+</body>
+</html>
